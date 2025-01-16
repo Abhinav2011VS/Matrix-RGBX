@@ -32,6 +32,7 @@
         const fontSize = 12;  // Smaller font size for compact Matrix
         const columns = Math.floor(canvas.width / fontSize);
         const drops = Array(columns).fill(0);
+        const speeds = Array(columns).fill(0).map(() => Math.random() * 3 + 2); // Randomized speeds for each column
 
         // Function to draw the Matrix effect
         function draw() {
@@ -54,8 +55,8 @@
                     drops[x] = 0;
                 }
 
-                // Increase the drop's position
-                drops[x]++;
+                // Increase the drop's position based on its random speed
+                drops[x] += speeds[x];
             }
         }
 
