@@ -10,68 +10,70 @@
             padding: 0;
             overflow: hidden;
             background-color: black;
-            font-family: "Courier New", Courier, monospace;
         }
 
-        .matrix {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            color: lime;
-            font-size: 20px;
-            line-height: 20px;
-            white-space: nowrap;
+        canvas {
+            display: block;
         }
-
-        .digit {
-            display: inline-block;
-            width: 15px;
-            height: 20px;
-        }
-
-        @keyframes rainbow {
-            0% { color: red; }
-            15% { color: orange; }
-            30% { color: yellow; }
-            45% { color: green; }
-            60% { color: cyan; }
-            75% { color: blue; }
-            100% { color: violet; }
-        }
-
-        .rainbow {
-            animation: rainbow 1s infinite;
-        }
-
     </style>
 </head>
 <body>
-    <div id="matrix" class="matrix"></div>
+    <canvas id="matrix"></canvas>
 
     <script>
-        const matrix = document.getElementById('matrix');
-        const columns = Math.floor(window.innerWidth / 15);
-        const rows = Math.floor(window.innerHeight / 20);
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
 
-        let drops = Array(columns).fill(0);
+        // Set canvas size to full window
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-        function draw() {
-            let output = '';
-            for (let y = 0; y < rows; y++) {
-                for (let x = 0; x < columns; x++) {
-                    const randChar = Math.random() > 0.5 ? '1' : '0';  // Randomly choose between 1 and 0
-                    const randomSpeed = Math.random() * 30 + 5;  // Random speed
+        const characters = ['0', '1'];
+        const fontSize = 20;
+        const columns = Math.floor(canvas.width / fontSize);
+        const drops = Array(columns).fill(0);
 
-                    // Generate the 1s and 0s with rainbow effect
-                    output += `<span class="digit rainbow">${randChar}</span>`;
-                }
-                output += '<br>';
-            }
-            matrix.innerHTML = output;
+        // Colors for the rainbow animation
+        const rainbowColors = [
+            'red', 'orange', 'yellow', 'green', 'cyan', 'blue', 'violet'
+        ];
+
+        // Function to generate a random color from the rainbow array
+        function getRandomColor() {
+            return rainbowColors[Math.floor(Math.random() * rainbowColors.length)];
         }
 
+        // Function to draw the Matrix effect
+        function draw() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'; // Slight fade effect to old characters
+            ctx.fillRect(0, 0, canvas.width, canvas.height); // Clear canvas with fade
+
+            ctx.fillStyle = 'green'; // Default color for characters
+            ctx.font = `${fontSize}px monospace`;
+
+            // Loop through each column
+            for (let x = 0; x < columns; x++) {
+                const text = characters[Math.floor(Math.random() * characters.length)];
+                const y = drops[x] * fontSize;
+
+                // Randomize speed (faster drops occasionally)
+                const speed = Math.random() * 3 + 2;
+
+                // Draw the "1" or "0" with a rainbow color on the current drop
+                ctx.fillStyle = getRandomColor();
+                ctx.fillText(text, x * fontSize, y);
+
+                // If the character reaches the bottom of the screen, reset it
+                if (y > canvas.height && Math.random() > 0.975) {
+                    drops[x] = 0;
+                }
+
+                // Increase the drop's position, influenced by random speed
+                drops[x] += speed;
+            }
+        }
+
+        // Call the draw function in a loop
         setInterval(draw, 50);
     </script>
 </body>
