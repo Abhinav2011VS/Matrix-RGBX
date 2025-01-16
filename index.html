@@ -29,7 +29,7 @@
         canvas.height = window.innerHeight;
 
         const characters = ['0', '1'];
-        const fontSize = 20;
+        const fontSize = 12;  // Smaller font size for compact Matrix
         const columns = Math.floor(canvas.width / fontSize);
         const drops = Array(columns).fill(0);
 
@@ -60,7 +60,7 @@
         }
 
         // Call the draw function in a loop
-        setInterval(draw, 50);
+        setInterval(draw, 30); // Reduced interval for a faster effect
     </script>
 </body>
 </html>
