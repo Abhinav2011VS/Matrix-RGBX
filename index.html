@@ -33,16 +33,6 @@
         const columns = Math.floor(canvas.width / fontSize);
         const drops = Array(columns).fill(0);
 
-        // Colors for the rainbow animation
-        const rainbowColors = [
-            'red', 'orange', 'yellow', 'green', 'cyan', 'blue', 'violet'
-        ];
-
-        // Function to generate a random color from the rainbow array
-        function getRandomColor() {
-            return rainbowColors[Math.floor(Math.random() * rainbowColors.length)];
-        }
-
         // Function to draw the Matrix effect
         function draw() {
             ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'; // Slight fade effect to old characters
@@ -56,11 +46,7 @@
                 const text = characters[Math.floor(Math.random() * characters.length)];
                 const y = drops[x] * fontSize;
 
-                // Randomize speed (faster drops occasionally)
-                const speed = Math.random() * 3 + 2;
-
-                // Draw the "1" or "0" with a rainbow color on the current drop
-                ctx.fillStyle = getRandomColor();
+                // Draw the "1" or "0"
                 ctx.fillText(text, x * fontSize, y);
 
                 // If the character reaches the bottom of the screen, reset it
@@ -68,8 +54,8 @@
                     drops[x] = 0;
                 }
 
-                // Increase the drop's position, influenced by random speed
-                drops[x] += speed;
+                // Increase the drop's position
+                drops[x]++;
             }
         }
 
