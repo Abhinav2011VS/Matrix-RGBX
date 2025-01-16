@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matrix Hack Effect</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: black;
+            font-family: "Courier New", Courier, monospace;
+        }
+
+        .matrix {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            color: lime;
+            font-size: 20px;
+            line-height: 20px;
+            white-space: nowrap;
+        }
+
+        .digit {
+            display: inline-block;
+            width: 15px;
+            height: 20px;
+        }
+
+        @keyframes rainbow {
+            0% { color: red; }
+            15% { color: orange; }
+            30% { color: yellow; }
+            45% { color: green; }
+            60% { color: cyan; }
+            75% { color: blue; }
+            100% { color: violet; }
+        }
+
+        .rainbow {
+            animation: rainbow 1s infinite;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="matrix" class="matrix"></div>
+
+    <script>
+        const matrix = document.getElementById('matrix');
+        const columns = Math.floor(window.innerWidth / 15);
+        const rows = Math.floor(window.innerHeight / 20);
+
+        let drops = Array(columns).fill(0);
+
+        function draw() {
+            let output = '';
+            for (let y = 0; y < rows; y++) {
+                for (let x = 0; x < columns; x++) {
+                    const randChar = Math.random() > 0.5 ? '1' : '0';  // Randomly choose between 1 and 0
+                    const randomSpeed = Math.random() * 30 + 5;  // Random speed
+
+                    // Generate the 1s and 0s with rainbow effect
+                    output += `<span class="digit rainbow">${randChar}</span>`;
+                }
+                output += '<br>';
+            }
+            matrix.innerHTML = output;
+        }
+
+        setInterval(draw, 50);
+    </script>
+</body>
+</html>
